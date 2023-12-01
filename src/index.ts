@@ -1,17 +1,33 @@
 import { Telegraf } from 'telegraf';
-import LocalSession from 'telegraf-session-local';
 import {CustomContext} from './interface';
+import { MongoClient } from 'mongodb';
+import { session } from 'telegraf-session-mongodb';
+import config from './config';
 
-const localSession = new LocalSession({ database: 'user_data.json' });
+const bot = new Telegraf<CustomContext>(config.BOT_TOKEN);
+const mongoClient = new MongoClient(config.MONGO_URI);
 
-const bot = new Telegraf<CustomContext>(String(process.env.BOT_TOKEN));
-bot.use((localSession).middleware());
+async function main(bot: Telegraf<CustomContext>, mongoClient: MongoClient) {
+	try {
+		await mongoClient.connect();
+		const db = mongoClient.db('sessionsDB');
 
-bot.start((ctx) => ctx.reply('Welcome'));
-bot.help((ctx) => ctx.reply('Send me a sticker'));
-bot.on('sticker', (ctx) => ctx.reply('👍'));
-bot.hears('hi', (ctx) => ctx.reply('Hey there'));
-void bot.launch();
+		bot.use(session(db, {
+			collectionName: 'sessions',
+		}));
+
+		bot.start(async (ctx) => {
+			ctx.reply('Welcome');
+			ctx.session.username = ctx.from.username;
+		});
+
+		void bot.launch();
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+void main(bot, mongoClient);
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));

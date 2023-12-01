@@ -20,6 +20,7 @@ const config = {
 	BOT_TOKEN: String(process.env.BOT_TOKEN),
 	ADMIN: String(process.env.ADMIN).split(','),
 	ENV: String(process.env.NODE_ENV),
+	MONGO_URI: String(process.env.MONGO_URI),
 };
 
 export default config;

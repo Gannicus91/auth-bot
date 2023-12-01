@@ -1,7 +1,7 @@
 import {Context as TelegrafContext} from 'telegraf/typings/context';
 
 export interface ITelegrafSession {
-	userName?: string;
+	username?: string;
 }
 
 export interface DBItem {
