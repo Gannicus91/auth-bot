@@ -1,6 +1,7 @@
 import {Context as TelegrafContext} from 'telegraf/typings/context';
 
 export interface ITelegrafSession {
+	id: number,
 	username?: string;
 }
 
