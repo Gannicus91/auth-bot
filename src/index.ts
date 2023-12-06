@@ -18,7 +18,7 @@ async function main(bot: Telegraf<CustomContext>, mongoClient: MongoClient) {
 
 		bot.start(async (ctx) => {
 			ctx.reply('Welcome');
-			ctx.session.username = ctx.from.username;
+			ctx.session.username = ctx.from.username?.toLowerCase();
 			ctx.session.id = ctx.from.id;
 		});
 
