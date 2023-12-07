@@ -29,6 +29,7 @@ async function main(bot: Telegraf<CustomContext>, mongoClient: MongoClient) {
 }
 
 void main(bot, mongoClient);
+console.log('Bot started');
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
