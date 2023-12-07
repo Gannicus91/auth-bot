@@ -1,7 +1,14 @@
 import { config as dotenvConf } from 'dotenv';
+import * as fs from 'fs';
 
 if (process.env.NODE_ENV !== 'production') {
 	dotenvConf();
+}
+
+let BOT_TOKEN = String(process.env.BOT_TOKEN);
+
+if (BOT_TOKEN.startsWith('/')) {
+	BOT_TOKEN = fs.readFileSync(BOT_TOKEN).toString().trim();
 }
 
 /**
@@ -17,7 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
  * @type admin: number - id владельца бота
  */
 const config = {
-	BOT_TOKEN: String(process.env.BOT_TOKEN),
+	BOT_TOKEN,
 	ADMIN: String(process.env.ADMIN).split(','),
 	ENV: String(process.env.NODE_ENV),
 	MONGO_URI: String(process.env.MONGO_URI),

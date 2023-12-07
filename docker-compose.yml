@@ -1,0 +1,38 @@
+version: "3.9"
+
+x-service-defaults: &service-defaults
+  restart: unless-stopped
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "100m"
+
+services:
+  mongo-db:
+    << : *service-defaults
+    image: mongo
+    container_name: mongo
+    volumes:
+      - db_data:/var/lib/mongo
+    ports:
+      - "27018:27017"
+  telegram-bot:
+    << : *service-defaults
+    image: 4kit0/auth-bot:latest
+    build: .
+    depends_on:
+      - mongo-db
+    container_name: auth-bot
+    environment:
+      BOT_TOKEN: /run/secrets/bot_token
+      ADMIN: 532562899
+      MONGO_URI: mongodb://mongo:27017/
+    secrets:
+        - bot_token
+
+secrets:
+  bot_token:
+    file: .bot_token.txt
+
+volumes:
+  db_data:
