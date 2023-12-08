@@ -19,10 +19,10 @@ WORKDIR /app
 
 # копируем оба 'package.json' и 'package-lock.json' (если есть)
 COPY --from=builder \
-	/app/package.json \
-	/app/yarn.lock \
-	/app/.pm2-docker.json \
-	./
+     /app/package.json \
+     /app/yarn.lock \
+     /app/.pm2-docker.json \
+     ./
 
 RUN yarn install --frozen-lockfile --production && \
     yarn cache clean --force
