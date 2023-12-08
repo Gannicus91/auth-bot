@@ -33,4 +33,4 @@ RUN chown -R node:"$(id -u node)" /app
 
 USER node
 
-CMD ["npm", "run", "start-docker"]
+CMD ["yarn", "start-docker"]
