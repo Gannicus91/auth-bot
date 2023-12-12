@@ -27,7 +27,10 @@ const config = {
 	BOT_TOKEN,
 	ADMIN: String(process.env.ADMIN).split(','),
 	ENV: String(process.env.NODE_ENV),
-	MONGO_URI: String(process.env.MONGO_URI),
+	MONGO_USERNAME: String(process.env.MONGO_USERNAME),
+	MONGO_PASSWORD: String(process.env.MONGO_PASSWORD),
+	MONGO_HOST: String(process.env.MONGO_HOST),
+	MONGO_PORT: String(process.env.MONGO_PORT),
 };
 
 export default config;
