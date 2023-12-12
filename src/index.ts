@@ -5,7 +5,8 @@ import { session } from 'telegraf-session-mongodb';
 import config from './config';
 
 const bot = new Telegraf<CustomContext>(config.BOT_TOKEN);
-const mongoClient = new MongoClient(config.MONGO_URI);
+const connectionString = `mongodb://${config.MONGO_USERNAME}:${config.MONGO_PASSWORD}@${config.MONGO_HOST}:${config.MONGO_PORT}?authSource=admin`;
+const mongoClient = new MongoClient(connectionString);
 
 async function main(bot: Telegraf<CustomContext>, mongoClient: MongoClient) {
 	try {
