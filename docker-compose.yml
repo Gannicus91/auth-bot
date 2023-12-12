@@ -10,28 +10,31 @@ x-service-defaults: &service-defaults
 services:
   mongo-db:
     << : *service-defaults
-    image: mongo
     container_name: mongo
+    image: mongo
     volumes:
       - db_data:/var/lib/mongo
     ports:
       - "27018:27017"
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_PASSWORD
+
   telegram-bot:
     << : *service-defaults
     image: 4kit0/auth-bot:latest
     depends_on:
       - mongo-db
     container_name: auth-bot
+    env_file: .env
     environment:
-      BOT_TOKEN: /run/secrets/bot_token
-      ADMIN: 532562899
-      MONGO_URI: mongodb://mongo:27017/
-    secrets:
-        - bot_token
-
-secrets:
-  bot_token:
-    file: .bot_token.txt
+      BOT_TOKEN: $BOT_TOKEN
+      ADMIN: $ADMIN
+      MONGO_USERNAME: $MONGO_USERNAME
+      MONGO_PASSWORD: $MONGO_PASSWORD
+      MONGO_HOST: $MONGO_HOST
+      MONGO_PORT: $MONGO_PORT
 
 volumes:
   db_data:
