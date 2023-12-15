@@ -18,9 +18,17 @@ async function main(bot: Telegraf<CustomContext>, mongoClient: MongoClient) {
 		}));
 
 		bot.start(async (ctx) => {
-			ctx.reply('Welcome');
-			ctx.session.username = ctx.from.username?.toLowerCase();
-			ctx.session.id = ctx.from.id;
+			const username = ctx.from.username;
+
+			if (username) {
+				ctx.session.username = username?.toLowerCase();
+				ctx.session.id = ctx.from.id;
+				await ctx.replyWithMarkdownV2(`Привет, \`${username}\`\\! Будем знакомы😉`);
+				await ctx.replyWithMarkdownV2('Я буду присылать тебе коды для авторизации в игре\\! А сейчас возвращайся, заполняй форму и жми *"Получить код"*');
+				await ctx.replyWithMarkdownV2(`В поле *"Логин в telegram"* введи \`${username}\` \\- можешь кликнуть по своему логину и он будет скопирован\\! Имя можешь ввести какое нравится🤪`);
+			} else {
+				void ctx.replyWithMarkdownV2('Упс\\! Кажется у вас не установлено *"Имя пользователя"* в телеграм 😱\nУстановите его в настройках и возвращайтесь\\! Без него играть не получится🥲');
+			}
 		});
 
 		void bot.launch();
